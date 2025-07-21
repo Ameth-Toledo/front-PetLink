@@ -66,16 +66,25 @@ function mostrarDatos({ mascota, especie, tamano, fotos, vacunas }) {
   setText("esterilizado", mascota.esterilizado);
   setText("descripcionMascota", mascota.descripcion || "—");
 
-  const imagenes = fotos ? fotos.split(",") : [];
-  document.getElementById("imagenPrincipal").src = imagenes[0] || "/mascotas/default.jpg";
+  // Mostrar imágenes
+  const imagenes = Array.isArray(fotos) ? fotos : [];
+  const imagenPrincipal = document.getElementById("imagenPrincipal");
+  imagenPrincipal.src = imagenes[0] ? `${API}${imagenes[0]}` : "/mascotas/default.jpg";
+
   const thumbs = document.getElementById("imagenesMiniatura");
   thumbs.innerHTML = "";
   imagenes.slice(1).forEach(url => {
     const img = document.createElement("img");
-    img.src = url;
+    img.src = `${API}${url}`;
+    img.alt = "Foto mascota";
+    img.style.cursor = "pointer";
+    img.addEventListener("click", () => {
+      imagenPrincipal.src = `${API}${url}`;
+    });
     thumbs.appendChild(img);
   });
 
+  // Vacunas
   const lista = document.getElementById("listaVacunas");
   lista.innerHTML = "";
   vacunas.length

@@ -1,48 +1,30 @@
 let formTouched = false;
 
-// Mapeos para IDs de tu base de datos
+// Mapeos
 const especieMap = {
-    "Perro": 1,
-    "Gato": 2,
-    "Hamster": 3,
-    "Tortuga": 4,
-    "Pájaro": 5,
-    "Conejo": 6,
-    "Reptil": 7
+    "Perro": 1, "Gato": 2, "Hamster": 3, "Tortuga": 4,
+    "Pájaro": 5, "Conejo": 6, "Reptil": 7
 };
-const tamanoMap = {
-    "Pequeño": 1,
-    "Mediano": 2,
-    "Grande": 3
-};
+const tamanoMap = { "Pequeño": 1, "Mediano": 2, "Grande": 3 };
 const vacunasMap = {
-    "Moquillo": 1,
-    "Parvovirus": 2,
-    "Hepatitis": 3,
-    "Rabia": 4,
-    "Triple felina": 5,
-    "Panleucopenia": 6,
-    "Virus de inmunodeficiencia felina (FIV)": 7,
+    "Moquillo": 1, "Parvovirus": 2, "Hepatitis": 3, "Rabia": 4,
+    "Triple felina": 5, "Panleucopenia": 6, "Virus de inmunodeficiencia felina (FIV)": 7,
     "Enfermedad vírica hemorrágica": 8
 };
 
-// Limita los campos de texto a 255 caracteres
-["nombre", "condiciones", "enfermedades", "descripcion-mascota", "raza"].forEach(id => {
+// Configuración de campos
+["nombre", "condiciones", "enfermedades", "descripcion-mascota"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.setAttribute("maxlength", "255");
 });
 
-const inputs = [
-    'nombre', 'especie', 'tamano', 'peso', 'sexo',
-    'condiciones', 'raza', 'esterilizada', 'desparacitada',
-    'enfermedades', 'descripcion-mascota'
-    // imagenes eliminadas de la validación obligatoria
-];
+const inputs = ['nombre', 'especie', 'tamano', 'peso', 'sexo', 'condiciones', 'esterilizada', 'desparacitada', 'enfermedades', 'descripcion-mascota'];
 
+// Funciones de validación
 function validarCampo(id) {
     const el = document.getElementById(id);
     if (!el) return false;
-    if (el.type === 'file') return true; // Siempre válido, ya no es obligatorio
+    if (el.type === 'file') return true;
     if (el.tagName === 'SELECT') return el.value !== "";
     return el.value.trim().length > 0;
 }
@@ -62,7 +44,6 @@ function validarForm() {
         }
         if (!validarCampo(id)) valido = false;
     }
-    document.getElementById('enviarForm').disabled = !valido;
     mostrarErrores(valido);
     return valido;
 }
@@ -77,7 +58,6 @@ function mostrarErrores(valido) {
         errorDiv.style.marginTop = '10px';
         document.querySelector('.registrar-boton').appendChild(errorDiv);
     }
-    // Solo mostrar error si el formulario está inválido Y el usuario ha interactuado
     if (!valido && formTouched) {
         errorDiv.textContent = 'Por favor, completa todos los campos obligatorios.';
     } else {
@@ -85,7 +65,7 @@ function mostrarErrores(valido) {
     }
 }
 
-// Listener en todos los campos
+// Event listeners para validación
 inputs.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -105,82 +85,81 @@ inputs.forEach(id => {
         });
     }
 });
-document.querySelectorAll('#vacunas-dropdown input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', () => {
-        formTouched = true;
-        validarForm();
-    });
-});
-validarForm(); // Inicializa el estado del botón
 
-// Envío del formulario
-document.getElementById('enviarForm').addEventListener('click', function() {
+document.getElementById('vacunas-select').addEventListener('click', () => {
+    formTouched = true;
+    validarForm();
+});
+
+validarForm();
+
+// Enviar formulario como FormData
+document.getElementById('enviarForm').addEventListener('click', function () {
     formTouched = true;
     if (!validarForm()) return;
 
-    const nombre = document.getElementById('nombre').value.trim();
-    const codigo_especie = especieMap[document.getElementById('especie').value] ?? null;
-    const codigo_tamano = tamanoMap[document.getElementById('tamano').value] ?? null;
-    const peso = parseFloat(document.getElementById('peso').value.trim());
-    const sexo = document.getElementById('sexo').value;
-    const raza = document.getElementById('raza').value.trim();
-    const condiciones = document.getElementById('condiciones').value.trim();
-    const esterilizado = document.getElementById('esterilizada').value;
-    const desparasitado = document.getElementById('desparacitada').value;
-    const discapacitado = condiciones; // Mapea a condiciones especiales
-    const enfermedades = document.getElementById('enfermedades').value.trim();
-    const descripcion = document.getElementById('descripcion-mascota').value.trim();
+    // Crear objeto FormData
+    const formData = new FormData();
 
-    // Vacunas
-    const vacunasSeleccionadas = [];
-    document.querySelectorAll('#vacunas-dropdown input[type="checkbox"]:checked').forEach(cb => {
-        const num = vacunasMap[cb.value];
-        if (num) vacunasSeleccionadas.push(num);
-    });
+    // Agregar campos de texto según el modelo del backend
+    formData.append('nombre_mascotas', document.getElementById('nombre').value.trim());
+    formData.append('codigo_especie', especieMap[document.getElementById('especie').value] || '');
+    formData.append('sexo', document.getElementById('sexo').value);
+    formData.append('peso', document.getElementById('peso').value.trim());
+    formData.append('codigo_tamaño', tamanoMap[document.getElementById('tamano').value] || '');
+    formData.append('raza', document.getElementById('raza').value.trim());
+    formData.append('esterilizado', document.getElementById('esterilizada').value);
+    formData.append('desparasitado', document.getElementById('desparacitada').value);
+    formData.append('discapacitado', document.getElementById('condiciones').value.trim());
+    formData.append('enfermedades', document.getElementById('enfermedades').value.trim());
+    formData.append('descripcion', document.getElementById('descripcion-mascota').value.trim());
+    
+    // Agregar vacunas seleccionadas (códigos)
+    const vacunasCheckboxes = document.querySelectorAll('#vacunas-dropdown input[type="checkbox"]:checked');
+    if (vacunasCheckboxes.length > 0) {
+        // Tomar solo la primera vacuna seleccionada (según el modelo que solo acepta un código)
+        const primeraVacuna = vacunasCheckboxes[0].value;
+        formData.append('codigo_vacunas', vacunasMap[primeraVacuna] || '');
+    } else {
+        formData.append('codigo_vacunas', ''); // O el valor por defecto que espera el backend
+    }
 
-    // Imágenes (solo nombres de archivo, opcional)
-    const fotos = [];
+    // Agregar archivos de imágenes
     for (let i = 1; i <= 3; i++) {
         const fileInput = document.getElementById('file' + i);
         if (fileInput && fileInput.files[0]) {
-            fotos.push(fileInput.files[0].name);
+            formData.append('fotos', fileInput.files[0]);
         }
     }
 
-    // id_solicitudCedente: deberás obtenerlo de tu sistema/autenticación
-    const id_solicitudCedente = 1; // <-- Cambia esto por el valor real
+    // Agregar id_Cedente si es necesario (deberías obtenerlo de alguna parte)
+    // formData.append('id_Cedente', valorIdCedente);
 
-    // Objeto para la API (ajusta las claves según tu modelo)
-    const datosMascota = {
-        nombre_mascotas: nombre,
-        codigo_especie,
-        sexo,
-        peso,
-        codigo_tamaño,
-        raza,
-        esterilizado,
-        desparasitado,
-        discapacitado,
-        enfermedades,
-        descripcion,
-        id_solicitudCedente,
-        fotos,
-        vacunas: vacunasSeleccionadas
-    };
+    // Depuración: Mostrar los datos que se enviarán
+    for (let pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
 
-    fetch('http://localhost:8080/mascotas', {
+    // Enviar FormData
+    fetch('http://44.208.231.53:7078/mascotas', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(datosMascota)
+        body: formData
+        // No establezcas el header 'Content-Type', el navegador lo hará automáticamente
+        // con el boundary correcto para FormData
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
     .then(data => {
-        alert('Mascota registrada correctamente');
+        alert('✅ Mascota registrada correctamente');
+        // Redirigir o limpiar el formulario
+        window.location.href = '/administrador/html/lista_mascotas.html'; // Ajusta la ruta según tu estructura
     })
     .catch(error => {
-        alert('Error al registrar la mascota');
-        console.error(error);
+        console.error('Error:', error);
+        alert('❌ Error al registrar la mascota: ' + error.message);
     });
 });
