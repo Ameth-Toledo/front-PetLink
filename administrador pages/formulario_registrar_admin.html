@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="/administrador css/formulario_registrar_admin.css">
+    <link rel="stylesheet" href="styles.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/administrador css/formulario_registrar_admin.css">
     <link rel="icon" href="data:,">
     <script src="/header_admin.js" defer></script>
 </head>
@@ -17,15 +18,13 @@
     <h1>Formulario para registrar Mascotas</h1>
 
     <div class="datos-container">
-        <section class="datos-mascota">
-
-            <section class="form">
-                <div>
+        <div class="form-container">
+            <div class="form-row">
+                <div class="form-group">
                     <label for="nombre">Nombre:</label>
                     <input type="text" name="nombre" id="nombre" placeholder="Llenar formulario">
                 </div>
-
-                <div>
+                <div class="form-group">
                     <label for="especie">Especie:</label>
                     <select name="especie" id="especie" class="styled-select">
                         <option value="" disabled selected hidden>Selecciona una opción</option>
@@ -38,11 +37,10 @@
                         <option value="Reptil">Reptil</option>
                     </select>
                 </div>
-            </section>
-            <br>
+            </div>
 
-            <section class="form">
-                <div>
+            <div class="form-row">
+                <div class="form-group">
                     <label for="tamano">Tamaño:</label>
                     <select name="tamano" id="tamano" class="styled-select">
                         <option value="" disabled selected hidden>Selecciona una opción</option>
@@ -51,16 +49,15 @@
                         <option value="Grande">Grande</option>
                     </select>
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="peso">Peso (kg):</label>
                     <input type="number" name="peso" id="peso" placeholder="Llenar formulario" min="0" step="0.01"
                         inputmode="decimal">
                 </div>
-            </section>
-            <br>
+            </div>
 
-            <section class="form">
-                <div>
+            <div class="form-row">
+                <div class="form-group">
                     <label for="sexo">Sexo:</label>
                     <select name="sexo" id="sexo" class="styled-select">
                         <option value="" disabled selected hidden>Selecciona una opción</option>
@@ -68,19 +65,14 @@
                         <option value="Hembra">Hembra</option>
                     </select>
                 </div>
-                <div>
-                    <label for="condiciones">Condiciones especiales:</label>
-                    <input type="text" name="condiciones" id="condiciones" placeholder="Llenar formulario">
-                </div>
-                <div>
+                <div class="form-group">
                     <label for="raza">Raza:</label>
                     <input type="text" name="raza" id="raza" placeholder="Llenar formulario">
                 </div>
-            </section>
-            <br>
+            </div>
 
-            <section class="form">
-                <div>
+            <div class="form-row">
+                <div class="form-group">
                     <label for="esterilizada">Esterilizada:</label>
                     <select name="esterilizada" id="esterilizada" class="styled-select">
                         <option value="" disabled selected hidden>Selecciona una opción</option>
@@ -88,7 +80,7 @@
                         <option value="No">No</option>
                     </select>
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="desparacitada">Desparacitada:</label>
                     <select name="desparacitada" id="desparacitada" class="styled-select">
                         <option value="" disabled selected hidden>Selecciona una opción</option>
@@ -96,11 +88,14 @@
                         <option value="No">No</option>
                     </select>
                 </div>
-            </section>
-            <br>
+            </div>
 
-            <section class="form">
-                <div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="condiciones">Condiciones especiales:</label>
+                    <input type="text" name="condiciones" id="condiciones" placeholder="Llenar formulario">
+                </div>
+                <div class="form-group">
                     <label for="vacunas">Vacunas:</label>
                     <div class="vacunas-multiselect">
                         <div class="vacunas-select" id="vacunas-select">
@@ -111,124 +106,187 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div>
+            <div class="form-row">
+                <div class="form-group">
                     <label for="enfermedades">Enfermedades o padecimientos:</label>
                     <input type="text" name="enfermedades" id="enfermedades" placeholder="Llenar formulario">
                 </div>
-            </section>
+            </div>
 
-            <label for="descripcion-mascota">Descripcion de la mascota:</label>
-            <textarea name="descripcion-mascota" id="descripcion-mascota" placeholder="Llenar formulario"></textarea>
-            <br>
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label for="descripcion-mascota">Descripción de la mascota:</label>
+                    <textarea name="descripcion-mascota" id="descripcion-mascota"
+                        placeholder="Llenar formulario"></textarea>
+                </div>
+            </div>
 
-            <section class="fotos-mascota">
-                <label for="">Fotos de la mascota (mínimo 3)</label>
-                <div class="fotos-input">
-                    <div class="file-input-container">
-                        <input type="file" name="foto1" id="file1" class="file-input"
-                            accept=".jpg,.jpeg,.png,image/jpeg,image/png">
-                        <label for="file1" class="file-input-label" id="file1-label">
-                            <img src="/Iconos/subir_archivo.svg" alt="Subir archivo" class="upload-icon"
-                                id="file1-icon">
-                            <span id="file1-text">Subir imagen</span>
-                        </label>
-                    </div>
-                    <div class="file-input-container">
-                        <input type="file" name="foto2" id="file2" class="file-input"
-                            accept=".jpg,.jpeg,.png,image/jpeg,image/png">
-                        <label for="file2" class="file-input-label" id="file2-label">
-                            <img src="/Iconos/subir_archivo.svg" alt="Subir archivo" class="upload-icon"
-                                id="file2-icon">
-                            <span id="file2-text">Subir imagen</span>
-                        </label>
-                    </div>
-                    <div class="file-input-container">
-                        <input type="file" name="foto3" id="file3" class="file-input"
-                            accept=".jpg,.jpeg,.png,image/jpeg,image/png">
-                        <label for="file3" class="file-input-label" id="file3-label">
-                            <img src="/Iconos/subir_archivo.svg" alt="Subir archivo" class="upload-icon"
-                                id="file3-icon">
-                            <span id="file3-text">Subir imagen</span>
-                        </label>
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label>Fotos de la mascota (mínimo 3)</label>
+                    <div class="fotos-input">
+                        <div class="file-input-container">
+                            <input type="file" name="foto1" id="file1" class="file-input"
+                                accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+                            <label for="file1" class="file-input-label" id="file1-label">
+                                <img src="/Iconos/subir_archivo.svg" alt="Subir archivo" class="upload-icon"
+                                    id="file1-icon">
+                                <span id="file1-text">Subir imagen</span>
+                            </label>
+                        </div>
+                        <div class="file-input-container">
+                            <input type="file" name="foto2" id="file2" class="file-input"
+                                accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+                            <label for="file2" class="file-input-label" id="file2-label">
+                                <img src="/Iconos/subir_archivo.svg" alt="Subir archivo" class="upload-icon"
+                                    id="file2-icon">
+                                <span id="file2-text">Subir imagen</span>
+                            </label>
+                        </div>
+                        <div class="file-input-container">
+                            <input type="file" name="foto3" id="file3" class="file-input"
+                                accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+                            <label for="file3" class="file-input-label" id="file3-label">
+                                <img src="/Iconos/subir_archivo.svg" alt="Subir archivo" class="upload-icon"
+                                    id="file3-icon">
+                                <span id="file3-text">Subir imagen</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
-            </section>
-            <section class="registrar-boton">
-                <div class="boton-aceptar"><a type="button" id="enviarForm" class="btn btn-aceptar-status">Aceptar</a>
+            </div>
+
+            <div class="form-row">
+                <div class="registrar-boton">
+                    <button type="button" id="enviarForm" class="btn-aceptar-status">Aceptar</button>
+                    <button type="button" id="enviarForm" class="btn-rechazar-status">Rechazar</button>
                 </div>
-                <div class="boton-rechazar"><a type="button" id="enviarForm"
-                        class="btn btn-rechazar-status">Rechazar</a></div>
-            </section>
-        </section>
+            </div>
+        </div>
     </div>
-</body>
-<script src="/js/vacunas.js"></script>
-<script src="/js/formulario_mascota.js"></script>
-<script>
-    // Bloquear valores negativos en peso
-    const pesoInput = document.getElementById('peso');
-    pesoInput.addEventListener('input', function () {
-        let value = this.value;
-        if (!/^(0|[1-9][0-9]*|[0-9]*\.[0-9]+)$/.test(value) || parseFloat(value) < 0) {
-            this.value = '';
-        }
-    });
 
-    // File Input Custom Behavior
-    function initCustomFileInput(fileInputId, labelId, iconId, textId) {
-        const fileInput = document.getElementById(fileInputId);
-        const label = document.getElementById(labelId);
-        const icon = document.getElementById(iconId);
-        const text = document.getElementById(textId);
-
-        let previousFile = null;
-
-        const checkSvg = `<span class="check-svg-container">
-        <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="45" cy="45" r="45" fill="#009FB9"/>
-          <path d="M65 30L40 60L25 47" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </span>`;
-
-        function showReadyState() {
-            icon.style.display = 'none';
-            const oldSvg = label.querySelector('.check-svg-container');
-            if (oldSvg) oldSvg.remove();
-            label.insertAdjacentHTML('afterbegin', checkSvg);
-            text.innerHTML = `<span style="color:#FEE2C2;">imagen lista<br>cambiar imagen</span>`;
-        }
-
-        function showInitialState() {
-            const checkIcon = label.querySelector('.check-svg-container');
-            if (checkIcon) checkIcon.remove();
-            icon.style.display = '';
-            text.innerHTML = 'Subir imagen';
-        }
-
-        fileInput.addEventListener('change', function (e) {
-            if (fileInput.files && fileInput.files.length > 0) {
-                previousFile = fileInput.files[0];
-                showInitialState();
-                showReadyState();
-            } else {
-                if (previousFile) {
-                    showInitialState();
-                    showReadyState();
-                } else {
-                    showInitialState();
-                }
+    <script src="/js/vacunas.js"></script>
+    <script src="/js/formulario_mascota.js"></script>
+    <script>
+        // Bloquear valores negativos en peso
+        const pesoInput = document.getElementById('peso');
+        pesoInput.addEventListener('input', function () {
+            let value = this.value;
+            if (!/^(0|[1-9][0-9]*|[0-9]*\.[0-9]+)$/.test(value) || parseFloat(value) < 0) {
+                this.value = '';
             }
         });
 
-        label.addEventListener('click', function () {
-            // No hay acción extra necesaria
-        });
-    }
+        // File Input Custom Behavior
+        function initCustomFileInput(fileInputId, labelId, iconId, textId) {
+            const fileInput = document.getElementById(fileInputId);
+            const label = document.getElementById(labelId);
+            const icon = document.getElementById(iconId);
+            const text = document.getElementById(textId);
 
-    initCustomFileInput('file1', 'file1-label', 'file1-icon', 'file1-text');
-    initCustomFileInput('file2', 'file2-label', 'file2-icon', 'file2-text');
-    initCustomFileInput('file3', 'file3-label', 'file3-icon', 'file3-text');
-</script>
+            let previousFile = null;
+
+            const checkSvg = `<span class="check-svg-container">
+        <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="45" cy="45" r="45" fill="#009FB9"/>
+            <path d="M65 30L40 60L25 47" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </span>`;
+
+            function showReadyState() {
+                icon.style.display = 'none';
+                const oldSvg = label.querySelector('.check-svg-container');
+                if (oldSvg) oldSvg.remove();
+                label.insertAdjacentHTML('afterbegin', checkSvg);
+                text.innerHTML = `<span style="color:#FEE2C2;">imagen lista<br>cambiar imagen</span>`;
+            }
+
+            function showInitialState() {
+                const checkIcon = label.querySelector('.check-svg-container');
+                if (checkIcon) checkIcon.remove();
+                icon.style.display = '';
+                text.innerHTML = 'Subir imagen';
+            }
+
+            fileInput.addEventListener('change', function (e) {
+                if (fileInput.files && fileInput.files.length > 0) {
+                    previousFile = fileInput.files[0];
+                    showInitialState();
+                    showReadyState();
+                } else {
+                    if (previousFile) {
+                        showInitialState();
+                        showReadyState();
+                    } else {
+                        showInitialState();
+                    }
+                }
+            });
+        }
+
+        // Initialize file inputs
+        initCustomFileInput('file1', 'file1-label', 'file1-icon', 'file1-text');
+        initCustomFileInput('file2', 'file2-label', 'file2-icon', 'file2-text');
+        initCustomFileInput('file3', 'file3-label', 'file3-icon', 'file3-text');
+
+        // Vacunas multiselect functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const vacunasSelect = document.getElementById('vacunas-select');
+            const vacunasDropdown = document.getElementById('vacunas-dropdown');
+
+            if (vacunasSelect && vacunasDropdown) {
+                // Sample vaccines - you can replace with your actual data
+                const vacunas = [
+                    "Rabia",
+                    "Moquillo",
+                    "Parvovirus",
+                    "Leptospirosis",
+                    "Hepatitis",
+                    "Parainfluenza"
+                ];
+
+                // Populate dropdown with checkboxes
+                vacunas.forEach(vacuna => {
+                    const label = document.createElement('label');
+                    label.innerHTML = `
+                <input type="checkbox" value="${vacuna}">
+                ${vacuna}
+            `;
+                    vacunasDropdown.appendChild(label);
+                });
+
+                // Toggle dropdown
+                vacunasSelect.addEventListener('click', function () {
+                    this.classList.toggle('active');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (!vacunasSelect.contains(e.target) && !vacunasDropdown.contains(e.target)) {
+                        vacunasSelect.classList.remove('active');
+                    }
+                });
+
+                // Update placeholder when vaccines are selected
+                vacunasDropdown.addEventListener('change', function (e) {
+                    if (e.target.type === 'checkbox') {
+                        const selected = Array.from(vacunasDropdown.querySelectorAll('input:checked'))
+                            .map(checkbox => checkbox.value);
+
+                        if (selected.length > 0) {
+                            document.getElementById('vacunas-placeholder').textContent =
+                                selected.join(', ');
+                        } else {
+                            document.getElementById('vacunas-placeholder').textContent =
+                                'Selecciona una o más';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
 
 </html>

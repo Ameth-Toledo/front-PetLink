@@ -91,7 +91,6 @@ class PetLinkHeader extends HTMLElement {
           <nav class="navbar">
             <a href="/index_admin.html">Inicio</a>
             <a href="/administrador pages/adoptar_admin.html">Adoptar</a>
-            <a href="/administrador pages/formulario_registrar_admin.html">Dar en adopción</a>
             <a href="/administrador pages/perfil_admin.html">Perfil</a>
             <a href="/administrador pages/solicitudesdeadopcion.html">Solicitudes Adopción</a>
             <a href="/administrador pages/solicitudespararegistrar.html">Solicitudes Registro</a>

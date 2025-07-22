@@ -21,26 +21,31 @@ h1 {
     padding-bottom: 40px;
 }
 
-.info-container {
-    padding-bottom: 30px;
+.datos-container {
+    max-width: 1260px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.solicitud-info {
-    justify-content: center;
-    align-items: center;
+.form-container {
     display: flex;
-    gap: 20px;
-    border: solid;
-    background-color: #FEE2C2;
-    height: 162px;
-    border-radius: 25px;
-    border-color: #F08224;
-    border-width: 1.8px;
+    flex-direction: column;
+    gap: 30px;
 }
 
-.solicitud-info p {
-    font-family: 'poppins';
-    font-size: 20px;
+.form-row {
+    display: flex;
+    gap: 60px;
+    width: 100%;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 0;
+}
+
+.form-group.full-width {
+    flex: 0 0 100%;
 }
 
 label {
@@ -49,75 +54,41 @@ label {
     font-size: 30px;
     line-height: 45px;
     letter-spacing: 3px;
+    display: block;
+    margin-bottom: 10px;
 }
 
-.form input, select, textarea {
+input,
+select,
+textarea {
     background-color: white;
     border: 3px solid #F08224;
     border-radius: 15px;
     height: 54px;
-    width: 600px;
-    display: flex;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 25px;
+    color: #F08224;
+    padding: 0 15px;
 }
 
-.form ::placeholder {
-    font-family: 'poppins';
+textarea {
+    height: 90px;
+    resize: vertical;
+    padding: 10px;
+}
+
+::placeholder {
     color: #FEE2C2;
     font-size: 25px;
     text-align: center;
-}
-
-#descripcion-mascota {
-    width: 1260px;
-    height: 90px;
-}
-
-.form {
-    display: flex;
-    gap: 60px;
-}
-
-.datos-container {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-}
-
-.fotos-mascota {
-    padding-bottom: 30px;
 }
 
 .fotos-input {
     display: flex;
-    gap: 199px;
+    gap: 60px;
     padding-top: 28px;
-}
-
-.fotos-input input {
-    width: 284px;
-    height: 221px;
-}
-
-input[type="file"]::file-selector-button {
-    background-color: white;
-    border: 3px solid #F08224;
-    border-radius: 15px;
-    height: 221px;
-    width: 284px;
-    display: flex;
-}
-
-::placeholder {
-    font-family: 'poppins';
-    color: #FEE2C2;
-    font-size: 25px;
-    text-align: center;
-    line-height: 54px;
-}
-
-#descripcion-mascota::placeholder {
-    line-height: 90px;
-    text-align: center;
+    justify-content: center;
 }
 
 .file-input-container {
@@ -150,13 +121,10 @@ input[type="file"]::file-selector-button {
     position: relative;
 }
 
-.check-svg-container {
+.upload-icon {
     width: 90px;
     height: 90px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .file-input-label span {
@@ -164,18 +132,6 @@ input[type="file"]::file-selector-button {
     color: #FEE2C2;
     font-size: 20px;
     text-align: center;
-    margin: 0;
-    padding: 0;
-}
-
-.file-input-label .upload-icon {
-    margin-bottom: 10px;
-}
-
-.upload-icon {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 10px;
 }
 
 select.styled-select {
@@ -188,113 +144,16 @@ select.styled-select {
     background-size: 24px;
     padding-right: 40px;
     color: #FEE2C2;
-    font-family: 'Poppins', sans-serif;
-    font-size: 25px;
-    cursor: pointer;
     text-align: center;
 }
 
 select.styled-select option {
     color: #F08224;
-    font-size: 25px;
-    padding: 10px;
 }
 
-select.styled-select:focus {
-    outline: none;
-}
-
-select.styled-select:invalid {
-    color: #FEE2C2;
-}
-
-select.styled-select option {
-    background-color: white;
-}
-
-select.styled-select option:hover {
-    background-color: #FFF9E9;
-}
-
-.registrar-boton {
-    text-align: center;
-    padding-bottom: 50px;
-    padding-top: 30px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    gap: 50px;
-    padding-left: 45px;
-}
-
-.boton-aceptar a {
-    font-family: 'Poppins', sans-serif;
-    font-size: 25px;
-    font-weight: 500;
-    text-decoration: none;
-    color: white;
-    border: solid;
-    border-color: #006272;
-    border-radius: 15px;
-    border-width: 1.8px;
-    padding: 10px 15px;
-    background: #009FB9;
-    line-height: 24px;
-    letter-spacing: 0px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.boton-rechazar a {
-    font-family: 'Poppins', sans-serif;
-    font-size: 25px;
-    font-weight: 500;
-    text-decoration: none;
-    color: white;
-    border: solid;
-    border-color: #954806;
-    border-radius: 15px;
-    border-width: 1.8px;
-    padding: 10px 15px;
-    background: #F08224;
-    line-height: 24px;
-    letter-spacing: 0px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-aceptar-status {
-    background-color: #009FB9;
-    border: 1.8px solid #006272;
-    border-radius: 12px;
-    color: white;
-    font-size: 25px;
-}
-
-.btn-rechazar-status:hover {
-    background-color: #FFF9E9;
-    border: 1.8px solid #F08224;
-    color: #954806;
-}
-
-.btn-rechazar-status {
-    background-color: #F08224;
-    border: 1.8px solid #954806;
-    border-radius: 12px;
-    color: white;
-    font-size: 25px;
-}
-
-.btn-aceptar-status:hover {
-    background-color: #FFF9E9;
-    border: 1.8px solid #006272;
-    color: #053A42;
-}
-
-/* Añade esto a tu CSS */
 .vacunas-multiselect {
     position: relative;
-    width: 600px;
+    width: 100%;
 }
 
 .vacunas-select {
@@ -307,10 +166,7 @@ select.styled-select option:hover {
     align-items: center;
     padding: 0 15px;
     cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-size: 25px;
     color: #FEE2C2;
-    position: relative;
 }
 
 .vacunas-dropdown {
@@ -329,12 +185,7 @@ select.styled-select option:hover {
     overflow-y: auto;
 }
 
-.vacunas-select.active {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.vacunas-select.active + .vacunas-dropdown {
+.vacunas-select.active+.vacunas-dropdown {
     display: flex;
 }
 
@@ -347,15 +198,51 @@ select.styled-select option:hover {
     font-size: 22px;
 }
 
-.vacunas-dropdown label:hover {
-    background-color: #FFF9E9;
-}
-
 .vacunas-dropdown input[type="checkbox"] {
     margin-right: 10px;
     width: 18px;
     height: 18px;
     accent-color: #F08224;
+}
+
+.registrar-boton {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 30px 0 50px;
+}
+
+.btn-aceptar-status,
+.btn-rechazar-status {
+    font-family: 'Poppins', sans-serif;
+    font-size: 25px;
+    font-weight: 500;
+    padding: 10px 30px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-aceptar-status {
+    background-color: #009FB9;
+    border: 1.8px solid #006272;
+    color: white;
+}
+
+.btn-rechazar-status {
+    background-color: #F08224;
+    border: 1.8px solid #954806;
+    color: white;
+}
+
+.btn-aceptar-status:hover {
+    background-color: #FFF9E9;
+    color: #053A42;
+}
+
+.btn-rechazar-status:hover {
+    background-color: #FFF9E9;
+    color: #954806;
 }
 
 input[type=number]::-webkit-inner-spin-button,

@@ -1,165 +1,172 @@
-let formTouched = false;
+// formulario_mascota.js
 
-// Mapeos
-const especieMap = {
-    "Perro": 1, "Gato": 2, "Hamster": 3, "Tortuga": 4,
-    "Pájaro": 5, "Conejo": 6, "Reptil": 7
-};
-const tamanoMap = { "Pequeño": 1, "Mediano": 2, "Grande": 3 };
-const vacunasMap = {
-    "Moquillo": 1, "Parvovirus": 2, "Hepatitis": 3, "Rabia": 4,
-    "Triple felina": 5, "Panleucopenia": 6, "Virus de inmunodeficiencia felina (FIV)": 7,
-    "Enfermedad vírica hemorrágica": 8
-};
+document.addEventListener('DOMContentLoaded', function() {
+    // Mapeo de especies a códigos (ajusta según tu base de datos)
+    const especiesMap = {
+        'Perro': 1,
+        'Gato': 2,
+        'Hamster': 3,
+        'Tortuga': 4,
+        'Pájaro': 5,
+        'Conejo': 6,
+        'Reptil': 7
+    };
 
-// Configuración de campos
-["nombre", "condiciones", "enfermedades", "descripcion-mascota"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.setAttribute("maxlength", "255");
-});
+    // Mapeo de tamaños a códigos
+    const tamanosMap = {
+        'Pequeño': 1,
+        'Mediano': 2,
+        'Grande': 3
+    };
 
-const inputs = ['nombre', 'especie', 'tamano', 'peso', 'sexo', 'condiciones', 'esterilizada', 'desparacitada', 'enfermedades', 'descripcion-mascota'];
-
-// Funciones de validación
-function validarCampo(id) {
-    const el = document.getElementById(id);
-    if (!el) return false;
-    if (el.type === 'file') return true;
-    if (el.tagName === 'SELECT') return el.value !== "";
-    return el.value.trim().length > 0;
-}
-
-function validarPeso() {
-    const peso = document.getElementById('peso');
-    const val = peso.value.trim();
-    return val !== "" && !isNaN(parseFloat(val)) && parseFloat(val) >= 0;
-}
-
-function validarForm() {
-    let valido = true;
-    for (const id of inputs) {
-        if (id === 'peso') {
-            if (!validarPeso()) valido = false;
-            continue;
+    // Función para obtener el código de la vacuna seleccionada
+    function getCodigoVacuna() {
+        const checkboxes = document.querySelectorAll('#vacunas-dropdown input[type="checkbox"]:checked');
+        if (checkboxes.length > 0) {
+            const vacunaNombre = checkboxes[0].value;
+            // Asume que vacunasMap está definido en vacunas.js
+            return window.vacunasMap ? window.vacunasMap[vacunaNombre] : 1; // Default 1 si no existe el map
         }
-        if (!validarCampo(id)) valido = false;
+        return 0; // Si no hay vacunas seleccionadas
     }
-    mostrarErrores(valido);
-    return valido;
-}
 
-function mostrarErrores(valido) {
-    let errorDiv = document.getElementById('errores-form');
-    if (!errorDiv) {
-        errorDiv = document.createElement('div');
-        errorDiv.id = 'errores-form';
-        errorDiv.style.color = 'red';
-        errorDiv.style.fontSize = '18px';
-        errorDiv.style.marginTop = '10px';
-        document.querySelector('.registrar-boton').appendChild(errorDiv);
+    // Validación del formulario
+    function validarFormulario() {
+        const camposRequeridos = [
+            {id: 'nombre', nombre: 'Nombre'},
+            {id: 'especie', nombre: 'Especie'},
+            {id: 'tamano', nombre: 'Tamaño'},
+            {id: 'peso', nombre: 'Peso'},
+            {id: 'sexo', nombre: 'Sexo'},
+            {id: 'raza', nombre: 'Raza'}
+        ];
+
+        for (let campo of camposRequeridos) {
+            const elemento = document.getElementById(campo.id);
+            if (!elemento || !elemento.value.trim()) {
+                alert(`Por favor complete el campo: ${campo.nombre}`);
+                return false;
+            }
+        }
+
+        // Validar peso positivo
+        const peso = parseFloat(document.getElementById('peso').value);
+        if (isNaN(peso)) {
+            alert('El peso debe ser un número válido');
+            return false;
+        }
+
+        // Validar fotos (mínimo 3)
+        const fotos = [
+            document.getElementById('file1').files[0],
+            document.getElementById('file2').files[0],
+            document.getElementById('file3').files[0]
+        ].filter(Boolean);
+
+        if (fotos.length < 3) {
+            alert('Debe subir al menos 3 fotos de la mascota');
+            return false;
+        }
+
+        return true;
     }
-    if (!valido && formTouched) {
-        errorDiv.textContent = 'Por favor, completa todos los campos obligatorios.';
-    } else {
-        errorDiv.textContent = '';
+
+    // Preparar los datos para enviar
+    function prepararDatosMascota() {
+        return {
+            nombre_mascotas: document.getElementById('nombre').value.trim(),
+            codigo_especie: especiesMap[document.getElementById('especie').value],
+            sexo: document.getElementById('sexo').value,
+            peso: parseFloat(document.getElementById('peso').value),
+            codigo_tamaño: tamanosMap[document.getElementById('tamano').value],
+            raza: document.getElementById('raza').value.trim(),
+            esterilizado: document.getElementById('esterilizada').value === 'Sí' ? 'S' : 'N',
+            desparasitado: document.getElementById('desparacitada').value === 'Sí' ? 'S' : 'N',
+            discapacitado: document.getElementById('condiciones').value.trim() || 'Ninguna',
+            enfermedades: document.getElementById('enfermedades').value.trim() || 'Ninguna',
+            codigo_vacunas: getCodigoVacuna(),
+            descripcion: document.getElementById('descripcion-mascota').value.trim(),
+            id_Cedente: obtenerIdCedente() // Debes implementar esta función
+        };
     }
-}
 
-// Event listeners para validación
-inputs.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (el.type === 'file') {
-        el.addEventListener('change', () => {
-            formTouched = true;
-            validarForm();
-        });
-    } else {
-        el.addEventListener('input', () => {
-            formTouched = true;
-            validarForm();
-        });
-        el.addEventListener('change', () => {
-            formTouched = true;
-            validarForm();
-        });
+    // Función para obtener el ID del cedente (implementa según tu autenticación)
+    function obtenerIdCedente() {
+        // Ejemplo: obtener de sessionStorage
+        return sessionStorage.getItem('userId') || 3; // Default 1 para pruebas
     }
-});
 
-document.getElementById('vacunas-select').addEventListener('click', () => {
-    formTouched = true;
-    validarForm();
-});
+    // Función para enviar las fotos por separado
+    async function enviarFotos(idMascota) {
+        const fotos = [
+            document.getElementById('file1').files[0],
+            document.getElementById('file2').files[0],
+            document.getElementById('file3').files[0]
+        ];
 
-validarForm();
+        for (let i = 0; i < fotos.length; i++) {
+            if (fotos[i]) {
+                const fotoData = new FormData();
+                fotoData.append('mascotaId', idMascota);
+                fotoData.append('foto', fotos[i]);
+                fotoData.append('orden', i + 1);
 
-// Enviar formulario como FormData
-document.getElementById('enviarForm').addEventListener('click', function () {
-    formTouched = true;
-    if (!validarForm()) return;
+                try {
+                    await fetch('http://44.208.231.53:7078/solicitudes-cedente', {
+                        method: 'POST',
+                        body: fotoData
+                    });
+                } catch (error) {
+                    console.error(`Error subiendo foto ${i + 1}:`, error);
+                }
+            }
+        }
+    }
 
-    // Crear objeto FormData
-    const formData = new FormData();
+    // Enviar datos al backend
+    async function registrarMascota() {
+        if (!validarFormulario()) return;
 
-    // Agregar campos de texto según el modelo del backend
-    formData.append('nombre_mascotas', document.getElementById('nombre').value.trim());
-    formData.append('codigo_especie', especieMap[document.getElementById('especie').value] || '');
-    formData.append('sexo', document.getElementById('sexo').value);
-    formData.append('peso', document.getElementById('peso').value.trim());
-    formData.append('codigo_tamaño', tamanoMap[document.getElementById('tamano').value] || '');
-    formData.append('raza', document.getElementById('raza').value.trim());
-    formData.append('esterilizado', document.getElementById('esterilizada').value);
-    formData.append('desparasitado', document.getElementById('desparacitada').value);
-    formData.append('discapacitado', document.getElementById('condiciones').value.trim());
-    formData.append('enfermedades', document.getElementById('enfermedades').value.trim());
-    formData.append('descripcion', document.getElementById('descripcion-mascota').value.trim());
+        const datosMascota = prepararDatosMascota();
+
+        try {
+            // 1. Registrar los datos básicos de la mascota
+            const response = await fetch('http://44.208.231.53:7078/solicitudes-cedente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datosMascota)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+
+            const mascotaRegistrada = await response.json();
+            console.log('Mascota registrada:', mascotaRegistrada);
+
+            // 2. Subir las fotos asociadas
+            if (mascotaRegistrada.id_mascotas) {
+                await enviarFotos(mascotaRegistrada.id_mascotas);
+            }
+
+            alert('Mascota registrada exitosamente!');
+            // Redirigir o limpiar formulario
+            window.location.href = '/mascotas-registradas.html';
+
+        } catch (error) {
+            console.error('Error al registrar mascota:', error);
+            alert('Error al registrar la mascota: ' + error.message);
+        }
+    }
+
+    // Event Listeners
+    document.querySelector('.btn-aceptar-status').addEventListener('click', registrarMascota);
     
-    // Agregar vacunas seleccionadas (códigos)
-    const vacunasCheckboxes = document.querySelectorAll('#vacunas-dropdown input[type="checkbox"]:checked');
-    if (vacunasCheckboxes.length > 0) {
-        // Tomar solo la primera vacuna seleccionada (según el modelo que solo acepta un código)
-        const primeraVacuna = vacunasCheckboxes[0].value;
-        formData.append('codigo_vacunas', vacunasMap[primeraVacuna] || '');
-    } else {
-        formData.append('codigo_vacunas', ''); // O el valor por defecto que espera el backend
-    }
-
-    // Agregar archivos de imágenes
-    for (let i = 1; i <= 3; i++) {
-        const fileInput = document.getElementById('file' + i);
-        if (fileInput && fileInput.files[0]) {
-            formData.append('fotos', fileInput.files[0]);
+    document.querySelector('.btn-rechazar-status').addEventListener('click', function() {
+        if (confirm('¿Cancelar registro? Se perderán los datos ingresados.')) {
+            document.querySelector('form').reset();
         }
-    }
-
-    // Agregar id_Cedente si es necesario (deberías obtenerlo de alguna parte)
-    // formData.append('id_Cedente', valorIdCedente);
-
-    // Depuración: Mostrar los datos que se enviarán
-    for (let pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
-
-    // Enviar FormData
-    fetch('http://44.208.231.53:7078/mascotas', {
-        method: 'POST',
-        body: formData
-        // No establezcas el header 'Content-Type', el navegador lo hará automáticamente
-        // con el boundary correcto para FormData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
-        return response.json();
-    })
-    .then(data => {
-        alert('✅ Mascota registrada correctamente');
-        // Redirigir o limpiar el formulario
-        window.location.href = '/administrador/html/lista_mascotas.html'; // Ajusta la ruta según tu estructura
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('❌ Error al registrar la mascota: ' + error.message);
     });
 });

@@ -1,17 +1,32 @@
-const API = "http://localhost:7070";
+const API = "http://44.208.231.53:7078/solicitudes-adopcion";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const tbody = document.getElementById("tbodySolicitudes");
 
+  const token = localStorage.getItem('jwt');
+
+  if (!token) {
+    alert("⚠️ No estás autenticado. Inicia sesión primero.");
+    window.location.href = '/index.html'; // Redirige al login si no hay token
+    return;
+  }
+
   try {
-    const res = await fetch(`${API}/admin/solicitudes-adopcion`);
+    const res = await fetch(`${API}/admin/solicitudes-adopcion`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error("Token inválido o acceso no autorizado.");
+    }
+
     const solicitudes = await res.json();
     tbody.innerHTML = "";
 
     if (solicitudes.length === 0) {
-      tbody.innerHTML = `
-        <tr><td colspan="7">No hay solicitudes registradas.</td></tr>
-      `;
+      tbody.innerHTML = `<tr><td colspan="7">No hay solicitudes registradas.</td></tr>`;
       return;
     }
 
@@ -37,8 +52,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     });
   } catch (error) {
     console.error("Error al cargar solicitudes:", error);
-    tbody.innerHTML = `
-      <tr><td colspan="7">Error al conectar con el servidor.</td></tr>
-    `;
+    tbody.innerHTML = `<tr><td colspan="7">Error al conectar con el servidor.</td></tr>`;
   }
 });
